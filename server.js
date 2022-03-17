@@ -2,8 +2,6 @@ const httpServer = require("http").createServer();
 const io = require("socket.io")(httpServer, {
   cors: { origin: "*" },
 });
-const fs = require("fs");
-const path = require("path");
 const PORT = 8080;
 let regIdx = 0;
 let calIdx = 0;
@@ -31,14 +29,3 @@ httpServer.listen(PORT, () =>
 );
 
 
-function handler(req, res) {
-  fs.readFile(path.join(__dirname, "index.html"), (err, data) => {
-    if (err) {
-      res.writeHead(500);
-      return res.end("Error loading index.html");
-    }
-
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(data);
-  });
-}

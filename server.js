@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
   socket.on("registration", (queue) => {
     regIdx++;
     console.log("Registered new user", regIdx);
-    socket.broadcast.emit("registered-users-amount", { amount: regIdx });
+    socket.emit("registered-users-amount", { amount: regIdx });
   });
 
   socket.on("call-next-user", (queue) => {

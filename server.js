@@ -12,10 +12,12 @@ app.get("/", (req, res) => {
 
 let regIdx = 0;
 let calIdx = 0;
+const displayUsersList = [];
+const displayUsersListLength = 8;
 
 io.on("connection", (socket) => {
   console.log(`Connected User, ID: ${socket.id}`);
-  socket.emit("init", { regIdx, calIdx });
+  socket.emit("init", { regIdx, calIdx, displayUsersListLength, displayUsersList });
 
   socket.on("registration", (queue) => {
     regIdx++;
@@ -25,7 +27,14 @@ io.on("connection", (socket) => {
 
   socket.on("call-next-user", (queue) => {
     calIdx++;
-    console.log("Call user", calIdx);
+
+    if (displayUsersList.length >= displayUsersListLength) {
+      displayUsersList.pop();
+    }
+
+    displayUsersList.unshift(calIdx);
+
+    console.log("Call user", calIdx, 'Display users list', displayUsersList);
     socket.broadcast.emit("user-info", { id: calIdx });
   });
 });
